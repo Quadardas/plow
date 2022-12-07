@@ -1,28 +1,21 @@
 <template>
-  <div class="task-card my-style">
-    <div>
-      <h4>{{ model.title }}</h4>
-      <p>{{ model.description }}</p>
-    </div>
-    <div></div>
+  <div
+    v-for="task in tasks"
+    class="task-card my-style"
+  >
+    <h4>{{ task?.id }}</h4>
+    <p>{{ task?.name }}</p>
   </div>
 </template>
-<script>
-export default {
-  props: {
-    model: {
-      required: true,
-      default: {
-        id: 0,
-        title: "Create something",
-        description: "code",
-        status: false,
-      },
-    },
-  },
-  setup() {},
-};
+
+<script lang="ts" setup>
+import type { ITask } from "@/models/task.model";
+
+defineProps<{
+  tasks: Array<ITask>;
+}>();
 </script>
+
 <style>
 .task-card {
   max-width: 500px;

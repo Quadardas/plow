@@ -1,7 +1,18 @@
 <template>
-  <header></header>
+  <div>
+    <Header />
+    <TaskCard :tasks="tasks" />
+  </div>
 </template>
 
-<script>
-import Header from "@/src/Header.vue";
+<script lang="ts" setup>
+import Header from "../components/Header.vue";
+import TaskCard from "@/components/TaskCard.vue";
+import { onBeforeMount, ref } from "vue";
+import type { ITask } from "@/models/task.model";
+
+const tasks = ref<Array<ITask>>([{
+  id: 0,
+  name: 'sas',
+}]);
 </script>
