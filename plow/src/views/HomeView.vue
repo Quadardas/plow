@@ -1,6 +1,7 @@
 <template>
-    <div class="container">aboba</div>
+  <header></header>
 </template>
 
-<script lang="ts" setup>
+<script>
+import Header from "@/src/Header.vue";
 </script>
