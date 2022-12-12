@@ -1,10 +1,8 @@
 <template>
-  <div
-    v-for="task in tasks"
-    class="task-card my-style"
-  >
+  <div v-for="task in tasks" class="task-card my-style">
     <h4>{{ task?.id }}</h4>
     <p>{{ task?.name }}</p>
+    <p>{{ task?.description }}</p>
   </div>
 </template>
 
@@ -20,7 +18,8 @@ defineProps<{
 .task-card {
   max-width: 500px;
   margin-top: 10px;
-  display: flex;
+  margin-left: 20px;
+  /* display: flex; */
   justify-content: space-between;
   align-content: center;
   border: 1px solid;

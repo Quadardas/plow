@@ -16,8 +16,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-</script>
+<script lang="ts" setup></script>
 
 <style lang="scss" scoped>
 .header {
@@ -28,14 +27,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  
+
   .header__list {
     display: flex;
 
     ul {
       list-style: none;
       display: flex;
-    
+
       .header__link {
         color: black;
         cursor: pointer;
@@ -51,10 +50,9 @@
       }
     }
   }
-  
+
   .logo {
     width: 120px;
   }
 }
-
 </style>

@@ -11,8 +11,11 @@ import TaskCard from "@/components/TaskCard.vue";
 import { onBeforeMount, ref } from "vue";
 import type { ITask } from "@/models/task.model";
 
-const tasks = ref<Array<ITask>>([{
-  id: 0,
-  name: 'sas',
-}]);
+const tasks = ref<Array<ITask>>([
+  {
+    id: 0,
+    name: "sas",
+    description: "sus",
+  },
+]);
 </script>
