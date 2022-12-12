@@ -8,7 +8,7 @@
 <script lang="ts" setup>
 import Header from "../components/Header.vue";
 import TaskCard from "@/components/TaskCard.vue";
-import { onBeforeMount, ref } from "vue";
+import { ref } from "vue";
 import type { ITask } from "@/models/task.model";
 
 const tasks = ref<Array<ITask>>([

@@ -1,24 +1,36 @@
 export enum ETypeWorker {
-    CodeWorker = 'Программист',
-    // что то еще, как то надо назвать аналитик/тестировщик/дезигнер
+	Frontend = "Фронтенд",
+  Backend = "Бэкенд",
+	Analytics = 'Аналитик',
+	QA = 'Тестировщик',
+	Designer = 'Дизайнер'
 }
 
-export enum ECodeWorkerType{
-    Frontend = 'Фронтенд',
-    Backend = 'Бэкенд'
+export enum EWorkerExp {
+  Junior = "Джуниор",
+  Middle = "Мидл",
+  Senior = "Сеньор",
 }
 
-export enum EWorkerExp{
-    Junior = 'Джуниор',
-    Middle = 'Мидл',
-    Senior = 'Сеньор'
+export enum EAvgTime {
+  More = "Больше",
+  Less = "Меньше",
 }
-export enum EAvgTime{
-    More = 'Больше',
-    Less = 'Меньше'
+
+export enum ETaskPriorities {
+	Low = 'Низкий',
+	Medium = 'Средний',
+	High = 'Высокий',
+	Highest = 'Наивысший',
 }
-export enum EActiveTask{
-    HaveTask = 'есть активные задачи',
-    NoTask = 'нет активных задач',
-    
+
+export enum ETreeResult {
+	Apply = 'Назначить',
+	Discard = 'Не назначать',
+	Uncalculated = 'Не расчитано'
+}
+
+export enum ETaskCount {
+	Low = 'Мало задач / нет задач',
+	High = 'Много задач',
 }
