@@ -1,4 +1,4 @@
-import { ETaskCount, ETreeResult } from "@/enums/treeCriteria.enum";
+import { EAvgTime, ETaskCount, ETreeResult } from "@/enums/treeCriteria.enum";
 import type { ITask } from "@/models/task.model";
 import type { IWorker } from "@/models/worker.model";
 import { WORKERS } from "@/constants/workers.const";
@@ -33,9 +33,17 @@ export class DecideTree {
     if (!rules || !workers || !task) {
       return ETreeResult.Uncalculated;
     } 
+    
 
     rules = rules.filter((rule) => rule.priority === task.priority && rule.type === task.type);
     workers = workers.filter((worker) => worker.info.type === task.type);
+
+    const fastWorker = workers.filter((worker)=>
+    worker.info.avgTime === EAvgTime.Less)?.[0];
+    
+    if (fastWorker){
+      return fastWorker;
+    }
 
     return workers.filter((worker) => 
       rules.find((rule) => 
