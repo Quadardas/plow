@@ -1,5 +1,7 @@
 <template>
-  <div class="workers"></div>
+  <div class="workers">
+    
+  </div>
 </template>
 <script lang="ts">
 import Header from "../components/Header.vue";

@@ -18,6 +18,7 @@ defineProps<{
   rule: ITreeRule;
 }>();
 </script>
+
 <style scoped>
 .rules {
   display: flex;

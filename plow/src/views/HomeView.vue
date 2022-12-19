@@ -2,8 +2,8 @@
   <div>
     <Header />
     <TaskCard :tasks="tasks" />
-    <WorkerCard v-for="worker in workers" :work="worker" :key="worker.id" />
-    <RulesItem v-for="rule in rules" :rule="rule" :key="rule.id" />
+    <!-- <WorkerCard v-for="worker in workers" :work="worker" :key="worker.id" />
+    <RulesItem v-for="rule in rules" :rule="rule" :key="rule.id" /> -->
   </div>
 </template>
 

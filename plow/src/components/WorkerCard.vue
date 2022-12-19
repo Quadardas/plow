@@ -6,6 +6,7 @@
   </div>
 </template>
 <script lang="ts" setup>
+import { WORKERS } from "@/constants/workers.const";
 import type { IWorker } from "@/models/worker.model";
 
 defineProps<{
