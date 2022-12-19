@@ -15,7 +15,7 @@ export const WORKERS = [
     tasks: [
       {
         id: 0,
-        name: 'сделать сайт',
+        name: 'сделать сайт ОГУ',
         description: 'asdasdadwdawawdawddw',
         type: ETypeWorker.Backend,
         priority: ETaskPriorities.Medium,
@@ -32,16 +32,16 @@ export const WORKERS = [
     tasks: [
       {
         id: 1,
-        name: 'сделать сайт',
+        name: 'сделать сайт АБОБА',
         description: 'asdasdadwdawawdawddw',
-        type: ETypeWorker.Backend,
+        type: ETypeWorker.Frontend,
         priority: ETaskPriorities.Highest,
       },
       {
         id: 2,
-        name: 'сделать сайт',
+        name: 'сделать сайт Максмарт',
         description: 'asdasdadwdawawdawddw',
-        type: ETypeWorker.Backend,
+        type: ETypeWorker.Frontend,
         priority: ETaskPriorities.High,
       }
     ],
