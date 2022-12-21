@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <div class="logo">
-      <h1 style="margin-top: 5px; margin-bottom: 0px">ABOBA</h1>
+      <h1 style="margin-top: 5px; margin-bottom: 0px">FlowTask</h1>
     </div>
     <div class="header__list">
       <ul>
@@ -9,7 +9,13 @@
           <router-link to="" class="">Список задач</router-link>
         </li>
         <li class="header__link">
-          <router-link to="">Авторизация</router-link>
+          <router-link to="create">Создать задачу</router-link>
+        </li>
+        <li class="header__link">
+          <router-link to="login">Авторизация</router-link>
+        </li>
+        <li class="header__link">
+          <router-link to="">F.A.Q</router-link>
         </li>
       </ul>
     </div>
