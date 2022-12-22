@@ -4,6 +4,7 @@
     <p>{{ task?.name }}</p>
     <p>{{ task?.description }}</p>
   </div>
+  <button style="margin: 10px 20px">Распределить</button>
 </template>
 
 <script lang="ts" setup>
