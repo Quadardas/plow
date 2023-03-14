@@ -11,7 +11,47 @@
     </form>
   </div>
 </template>
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { EUserTypes } from '@/enums/userType.enum';
+import { useUserStore } from '@/stores/counter';
+import axios from 'axios';
+import { ref } from 'vue';
+import { useCookies } from "vue3-cookies";
+
+const email = ref();
+const password = ref();
+const cookies = useCookies();
+
+async function jwtLogin() {
+  const result = await axios.post('http://19ivt.ru:8080/api/login', {
+    Email: email.value,
+    Password: password.value,
+  })
+  
+  cookies.cookies.set('token', result.data?.Data?.Token);
+  cookies.cookies.set('verify', result.data?.Data?.UserData?.Verify);
+  cookies.cookies.set('userkey', result.data?.Data?.UserData?.UserKey);
+}
+
+async function chapLogin() {
+  const result = await axios.post('http://19ivt.ru:8080/api/login', {
+    Email: email.value,
+    Password: password.value,
+  })
+
+  cookies.cookies.set('salt', result?.data?.salt);
+  cookies.cookies.set('N', result?.data?.N);
+  cookies.cookies.set('userKey', result?.data?.userkey);
+}
+
+async function login() {
+  // await jwtLogin();
+  await chapLogin();
+
+  const store = useUserStore();
+  store.role = EUserTypes.Supervisor;
+}
+</script>
 
 <style lang="scss" scoped>
 .login-page {

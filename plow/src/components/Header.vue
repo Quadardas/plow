@@ -8,7 +8,10 @@
         <li class="header__link">
           <router-link to="" class="">Список задач</router-link>
         </li>
-        <li class="header__link">
+        <li
+          v-if="!isSupervisor" 
+          class="header__link"
+        >
           <router-link to="create">Создать задачу</router-link>
         </li>
         <li class="header__link">
@@ -22,7 +25,13 @@
   </div>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { EUserTypes } from '@/enums/userType.enum';
+import { useUserStore } from '@/stores/counter';
+import { computed } from 'vue';
+
+const isSupervisor = computed(() => useUserStore()?.role === EUserTypes.Supervisor);
+</script>
 
 <style lang="scss" scoped>
 .header {

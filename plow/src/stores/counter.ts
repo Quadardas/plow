@@ -1,12 +1,9 @@
-import { ref, computed } from 'vue'
+import { ref, type Ref } from 'vue'
 import { defineStore } from 'pinia'
+import { EUserTypes } from '@/enums/userType.enum';
 
-export const useCounterStore = defineStore('counter', () => {
-  const count = ref(0)
-  const doubleCount = computed(() => count.value * 2)
-  function increment() {
-    count.value++
-  }
+export const useUserStore = defineStore('user', () => {
+  const role: Ref<null | EUserTypes> = ref(EUserTypes.Worker);
 
-  return { count, doubleCount, increment }
+  return { role }
 })
