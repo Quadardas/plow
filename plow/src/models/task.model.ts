@@ -1,4 +1,5 @@
 import type { ETaskPriorities, ETypeWorker } from "@/enums/treeCriteria.enum";
+import type { IWorker } from "./worker.model";
 
 export interface ITask {
   id: number;
@@ -7,4 +8,5 @@ export interface ITask {
   type: ETypeWorker;
   priority: ETaskPriorities;
   timeSpent?: number;
+  worker:IWorker;
 }

@@ -3,6 +3,7 @@ import { EAvgTime, ETaskPriorities, ETypeWorker, EWorkerExp } from "@/enums/tree
 export const WORKERS = [
   {
     id: 0,
+    name: "Иван",
     tasks: [],
     info: {
       exp: EWorkerExp.Middle,
@@ -12,6 +13,7 @@ export const WORKERS = [
   },
   {
     id: 1,
+    name: "Не Саша",
     tasks: [
       {
         id: 0,
@@ -29,6 +31,7 @@ export const WORKERS = [
   },
   {
     id: 2,
+    name: "Саша",
     tasks: [
       {
         id: 1,

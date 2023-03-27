@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="wrapper">
+    <Header />
     <RouterView />
   </div>
 </template>
@@ -9,6 +10,7 @@ import { RouterView } from "vue-router";
 import { DecideTree } from "@/services/decideTree.service";
 import { onMounted } from "vue";
 import { ETaskPriorities, ETypeWorker } from "./enums/treeCriteria.enum";
+import Header from "@/components/Header.vue";
 
 onMounted(() => {
   const decideTree = new DecideTree();
@@ -24,4 +26,8 @@ onMounted(() => {
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.wrapper {
+  display: flex;
+}
+</style>

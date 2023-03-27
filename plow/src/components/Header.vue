@@ -14,9 +14,6 @@
         <li class="header__link">
           <router-link to="login">Авторизация</router-link>
         </li>
-        <li class="header__link">
-          <router-link to="">F.A.Q</router-link>
-        </li>
       </ul>
     </div>
   </div>
@@ -26,32 +23,35 @@
 
 <style lang="scss" scoped>
 .header {
-  height: 50px;
-  background-color: rgb(255, 103, 242);
-  padding: 5px 50px;
+  height: 100vh;
+  width: 150px;
+  background-color: rgb(32, 136, 255);
+  padding: 5px;
   margin: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  // display: flex;
+  // justify-content: space-between;
+  // align-items: center;
 
   .header__list {
     display: flex;
+    padding: 0 10px;
 
     ul {
       list-style: none;
-      display: flex;
+
+      // display: flex;
 
       .header__link {
         color: black;
         cursor: pointer;
-        margin-left: 14px;
+        padding-bottom: 20px;
+        // margin: 5px 14px;
+        font-size: 20px;
 
         a {
           text-decoration: none;
         }
-
-        &:first-child {
-          margin-left: 0;
+        :hover {
         }
       }
     }
@@ -59,6 +59,7 @@
 
   .logo {
     width: 120px;
+    padding: 0 0 20px 4px;
   }
 }
 </style>
