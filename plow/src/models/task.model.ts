@@ -8,5 +8,5 @@ export interface ITask {
   type: ETypeWorker;
   priority: ETaskPriorities;
   timeSpent?: number;
-  worker:IWorker;
+  worker?:IWorker;
 }

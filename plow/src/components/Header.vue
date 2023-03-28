@@ -9,9 +9,6 @@
           <router-link to="" class="">Список задач</router-link>
         </li>
         <li class="header__link">
-          <router-link to="create">Создать задачу</router-link>
-        </li>
-        <li class="header__link">
           <router-link to="login">Авторизация</router-link>
         </li>
       </ul>

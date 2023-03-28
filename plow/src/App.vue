@@ -11,6 +11,8 @@ import { DecideTree } from "@/services/decideTree.service";
 import { onMounted } from "vue";
 import { ETaskPriorities, ETypeWorker } from "./enums/treeCriteria.enum";
 import Header from "@/components/Header.vue";
+import Modal from "@/components/modals/Modal.vue";
+import { ref } from "vue";
 
 onMounted(() => {
   const decideTree = new DecideTree();
@@ -29,5 +31,6 @@ onMounted(() => {
 <style scoped>
 .wrapper {
   display: flex;
+  width: 100%;
 }
 </style>
