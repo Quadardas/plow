@@ -9,7 +9,20 @@
       </h2>
     </div>
     <div v-if="firstActive">
-      <TaskCard v-for="(task, key) in taskList" :key="key" :task="task" />
+      <TaskCard
+        v-for="(task, key) in spreadedTasks"
+        :key="key"
+        :task="task"
+        @click="onTaskClick(task)"
+      />
+      <Modal :show="showTask" @close="showTask = false">
+        <template #header>
+          <h3>Просмотр задачи</h3>
+        </template>
+        <template #body>
+          <EditTask :task="selectedTask" />
+        </template>
+      </Modal>
       <button @click="showModal = true">Создать задачу</button>
       <!-- use the modal component, pass in the prop -->
       <Modal :show="showModal" @close="showModal = false">
@@ -20,12 +33,20 @@
           <CreateTask />
         </template>
       </Modal>
-      <button>Распределить</button>
     </div>
-    <div v-else>sas</div>
+    <div v-else>
+      <div v-if="!unSpreadedTasks">нет задач</div>
+      <div v-else>
+        <TaskCard
+          v-for="(task, key) in unSpreadedTasks"
+          :key="key"
+          :task="task"
+        />
+        <button>Распределить</button>
+      </div>
+    </div>
   </div>
 </template>
-g
 
 <script lang="ts" setup>
 import TaskCard from "../components/TaskCard.vue";
@@ -39,34 +60,48 @@ import type { ITreeRule } from "@/models/rule.model";
 import { RULES } from "@/constants/rules.const";
 import Modal from "@/components/modals/Modal.vue";
 import CreateTask from "@/components/modals/CreateTask.vue";
+import { TASKS } from "@/constants/tasks.const";
+import EditTask from "@/components/modals/EditTask.vue";
 
-const taskList = computed(() =>
-  workers.value
-    ?.map((worker) => ({
-      ...worker,
-      tasks: worker.tasks.map((task) => ({
-        ...task,
-        worker: worker.name,
-      })),
-    }))
-    .reduce((acc, worker) => [...acc, ...worker.tasks], [])
-);
+// const taskList = computed(() =>
+//   workers.value
+//     ?.map((worker) =>
+//     ({
+//       ...worker,
+//       tasks: worker.tasks.map((task) => ({
+//         ...task,
+//         worker: worker.name,
+//       })),
+//     }))
+//     .reduce((acc, worker) => [...acc, ...worker.tasks], [])
+// );
+
 const rules = ref<Array<ITreeRule>>(RULES);
 const workers = ref<Array<IWorker>>(WORKERS);
-const tasks = ref<Array<ITask>>(
-  WORKERS.reduce((acc: Array<ITask>, worker) => {
-    acc.push(...worker.tasks);
-    return acc;
-  }, [])
-);
+const tasks = ref<Array<ITask>>(TASKS);
 const showModal = ref(false);
-const firstActive = ref(false);
+const showTask = ref(false);
+const firstActive = ref(true);
+const taskList = computed(() => tasks.value);
+const selectedTask = ref();
+const spreadedTasks = computed(() =>
+  tasks.value.filter((task, index) => task.worker)
+);
+const unSpreadedTasks = computed(() =>
+  tasks.value.filter((task) => !task.worker)
+);
+
+function onTaskClick(task) {
+  selectedTask.value = task;
+  showTask.value = true;
+}
 </script>
 
 <style lang="scss" scoped>
 .home {
   width: 100%;
   .select__tasks {
+    margin-top: 15px;
     width: 100%;
     display: flex;
     h2 {

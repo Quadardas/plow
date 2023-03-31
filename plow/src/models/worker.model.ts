@@ -4,7 +4,8 @@ import type { ITask } from "./task.model";
 export interface IWorker {
   id: number;
   name: string;
-  tasks: Array<ITask>;
+  //tasks: Array<ITask>;
+   tasks: Array<number>;
   info: IWorkerInfo;
 }
 

@@ -14,15 +14,16 @@ export const WORKERS = [
   {
     id: 1,
     name: "Не Саша",
-    tasks: [
-      {
-        id: 0,
-        name: 'сделать сайт ОГУ',
-        description: 'asdasdadwdawawdawddw',
-        type: ETypeWorker.Backend,
-        priority: ETaskPriorities.Medium,
-      }
-    ],
+    tasks: [0],
+    // tasks: [
+    //   {
+    //     id: 0,
+    //     name: 'сделать сайт ОГУ',
+    //     description: 'asdasdadwdawawdawddw',
+    //     type: ETypeWorker.Backend,
+    //     priority: ETaskPriorities.Medium,
+    //   }
+    // ],
     info: {
       exp: EWorkerExp.Middle,
       type: ETypeWorker.Backend,
@@ -32,22 +33,23 @@ export const WORKERS = [
   {
     id: 2,
     name: "Саша",
-    tasks: [
-      {
-        id: 1,
-        name: 'сделать сайт АБОБА',
-        description: 'asdasdadwdawawdawddw',
-        type: ETypeWorker.Frontend,
-        priority: ETaskPriorities.Highest,
-      },
-      {
-        id: 2,
-        name: 'сделать сайт Максмарт',
-        description: 'asdasdadwdawawdawddw',
-        type: ETypeWorker.Frontend,
-        priority: ETaskPriorities.High,
-      }
-    ],
+    tasks: [1,2],
+    // tasks: [
+    //   {
+    //     id: 1,
+    //     name: 'сделать сайт АБОБА',
+    //     description: 'asdasdadwdawawdawddw',
+    //     type: ETypeWorker.Frontend,
+    //     priority: ETaskPriorities.Highest,
+    //   },
+    //   {
+    //     id: 2,
+    //     name: 'сделать сайт Максмарт',
+    //     description: 'asdasdadwdawawdawddw',
+    //     type: ETypeWorker.Frontend,
+    //     priority: ETaskPriorities.High,
+    //   }
+    // ],
     info: {
       exp: EWorkerExp.Senior,
       type: ETypeWorker.Frontend,

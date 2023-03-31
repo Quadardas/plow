@@ -32,6 +32,7 @@ withDefaults(
   defineProps<{
     show: boolean;
     okButtonText: string;
+    task: any;
   }>(),
   {
     okButtonText: "ОК",
