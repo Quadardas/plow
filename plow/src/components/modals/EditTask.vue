@@ -10,19 +10,17 @@
       type="text"
       placeholder="Описание задачи"
     />
-    <select>
-      <option class="placeholder" selected disabled value="">Приоритет</option>
-      <option value="">Низкий</option>
-      <option value="">Высокий</option>
-      <option value="">Наивысший</option>
+    <select v-model="selectedPriority">
+      <option class="placeholder" disabled value="">Приоритет</option>
+      <option value="Низкий">Низкий</option>
+      <option value="Средний">Средний</option>
+      <option value="Высокий">Высокий</option>
+      <option value="Наивысший">Наивысший</option>
     </select>
     <select>
-      <option class="placeholder" selected disabled value="">
-        Направление
-      </option>
-      <option value="">Низкий</option>
-      <option value="">Высокий</option>
-      <option value="">Наивысший</option>
+      <option class="placeholder" disabled value="">Направление</option>
+      <option value="фронт">фронт</option>
+      <option value="бэк">бэк</option>
     </select>
   </form>
 </template>
@@ -34,6 +32,8 @@ const props = defineProps<{
   task: ITask;
 }>();
 
+const selectedPriority = ref(props.task.priority);
+
 const taskInstance = ref(props.task);
 </script>
 <style lang="scss">
@@ -42,6 +42,7 @@ form {
   gap: 8px;
   display: flex;
   flex-direction: column;
+  height: 60%;
   select {
     max-width: 110px;
     .placeholder {

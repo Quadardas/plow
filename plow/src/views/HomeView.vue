@@ -15,7 +15,7 @@
         :task="task"
         @click="onTaskClick(task)"
       />
-      <Modal :show="showTask" @close="showTask = false">
+      <Modal :show="showTask" @close="showTask = false" @ok="showTask = false">
         <template #header>
           <h3>Просмотр задачи</h3>
         </template>
@@ -23,22 +23,12 @@
           <EditTask :task="selectedTask" />
         </template>
       </Modal>
-      <button @click="showModal = true">Создать задачу</button>
-      <!-- use the modal component, pass in the prop -->
-      <Modal :show="showModal" @close="showModal = false">
-        <template #header>
-          <h3>Создание задачи</h3>
-        </template>
-        <template #body>
-          <CreateTask />
-        </template>
-      </Modal>
     </div>
     <div v-else>
-      <div v-if="!unSpreadedTasks">нет задач</div>
+      <div v-if="!unspreadedTasks">нет задач</div>
       <div v-else>
         <TaskCard
-          v-for="(task, key) in unSpreadedTasks"
+          v-for="(task, key) in unspreadedTasks"
           :key="key"
           :task="task"
         />
@@ -50,7 +40,7 @@
 
 <script lang="ts" setup>
 import TaskCard from "../components/TaskCard.vue";
-import { computed, ref } from "vue";
+import { computed, inject, ref } from "vue";
 import type { ITask } from "@/models/task.model";
 import WorkerCard from "@/components/WorkerCard.vue";
 import type { IWorker } from "@/models/worker.model";
@@ -62,7 +52,6 @@ import Modal from "@/components/modals/Modal.vue";
 import CreateTask from "@/components/modals/CreateTask.vue";
 import { TASKS } from "@/constants/tasks.const";
 import EditTask from "@/components/modals/EditTask.vue";
-
 // const taskList = computed(() =>
 //   workers.value
 //     ?.map((worker) =>

@@ -11,12 +11,30 @@
         <li class="header__link">
           <router-link to="login">Авторизация</router-link>
         </li>
+        <li class="header__link" @click="showModal = true">
+          <router-link to="" class="">Создать задачу</router-link>
+          <Modal
+            :show="showModal"
+            :modalComponent="CreateTask"
+            @close="showModal = false"
+            @ok="showModal = false"
+          >
+            <template #header>
+              <h3>Создание задачи</h3>
+            </template>
+          </Modal>
+        </li>
       </ul>
     </div>
   </div>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import Modal from "@/components/modals/Modal.vue";
+import CreateTask from "@/components/modals/CreateTask.vue";
+import { ref } from "vue";
+const showModal = ref(false);
+</script>
 
 <style lang="scss" scoped>
 .header {

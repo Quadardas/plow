@@ -8,7 +8,7 @@
 <script lang="ts" setup>
 import { RouterView } from "vue-router";
 import { DecideTree } from "@/services/decideTree.service";
-import { onMounted } from "vue";
+import { onMounted, provide } from "vue";
 import { ETaskPriorities, ETypeWorker } from "./enums/treeCriteria.enum";
 import Header from "@/components/Header.vue";
 import Modal from "@/components/modals/Modal.vue";

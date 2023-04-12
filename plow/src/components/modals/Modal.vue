@@ -6,17 +6,27 @@
           <button class="modal-container__close" @click="$emit('close')">
             Закрыть
           </button>
-          <div class="modal-header">
-            <slot name="header">default header</slot>
-          </div>
+          <div>
+            <div class="modal-header">
+              <slot name="header">default header</slot>
+            </div>
 
-          <div class="modal-body">
-            <slot name="body">default body</slot>
-          </div>
+            <component
+              v-if="modalComponent"
+              :is="modalComponent"
+              v-model="componentModelValue"
+            />
 
+            <div v-else class="modal-body">
+              <slot name="body">default body</slot>
+            </div>
+          </div>
           <div class="modal-footer">
             <slot name="footer">
-              <button class="modal-default-button" @click="$emit('ok')">
+              <button
+                class="modal-default-button"
+                @click="$emit('ok', componentModelValue)"
+              >
                 {{ okButtonText }}
               </button>
             </slot>
@@ -28,11 +38,15 @@
 </template>
 
 <script lang="ts" setup>
+import { ref } from "vue";
+import type { Component } from "vue";
+
 withDefaults(
   defineProps<{
     show: boolean;
     okButtonText: string;
     task: any;
+    modalComponent?: Component;
   }>(),
   {
     okButtonText: "ОК",
@@ -41,8 +55,10 @@ withDefaults(
 
 defineEmits<{
   (e: "close"): void;
-  (e: "ok");
+  (e: "ok", value: null | any);
 }>();
+
+const componentModelValue = ref();
 </script>
 
 <style lang="scss" scoped>
@@ -59,8 +75,9 @@ defineEmits<{
 }
 
 .modal-container {
-  height: fit-content;
-  width: fit-content;
+  height: 50%;
+  width: 50%;
+  max-width: 100%;
   min-width: 500px;
   margin: auto;
   padding: 20px 30px;
@@ -69,6 +86,9 @@ defineEmits<{
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.3s ease;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   &__close {
     position: absolute;
@@ -86,6 +106,8 @@ defineEmits<{
   margin: 20px 0;
 }
 
+.modal-footer {
+}
 .modal-default-button {
   float: right;
 }
