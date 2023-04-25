@@ -6,7 +6,7 @@
     <div class="header__list">
       <ul>
         <li class="header__link">
-          <router-link to="" class="">Список задач</router-link>
+          <router-link to="/" class="">Список задач</router-link>
         </li>
         <li class="header__link">
           <router-link to="login">Авторизация</router-link>
@@ -24,6 +24,10 @@
             </template>
           </Modal>
         </li>
+        <li class="header__link">
+          <router-link to="createUser">Создание Пользователя</router-link>
+        </li>
+        <li><button @click="Auth.logOut">выйти</button></li>
       </ul>
     </div>
   </div>
@@ -33,6 +37,7 @@
 import Modal from "@/components/modals/Modal.vue";
 import CreateTask from "@/components/modals/CreateTask.vue";
 import { ref } from "vue";
+import { Auth } from "../services/auth.service";
 const showModal = ref(false);
 </script>
 

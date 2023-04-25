@@ -3,15 +3,36 @@
     <form class="login" @submit.prevent="login">
       <h1>Авторизация</h1>
       <label>Логин</label>
-      <input required v-model="email" type="login" placeholder="Логин" />
+      <input
+        required
+        v-model="userLogin.login"
+        type="login"
+        placeholder="Логин"
+      />
       <label>Пароль</label>
-      <input required v-model="password" type="password" placeholder="Пароль" />
+      <input
+        required
+        v-model="userLogin.password"
+        type="password"
+        placeholder="Пароль"
+      />
 
       <button type="submit">Login</button>
     </form>
   </div>
 </template>
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { reactive } from "vue";
+import api from "../axios";
+import { Auth } from "../services/auth.service";
+const userLogin = reactive({
+  login: "",
+  password: "",
+});
+async function login() {
+  await Auth.login(userLogin.login, userLogin.password);
+}
+</script>
 
 <style lang="scss" scoped>
 .login-page {
