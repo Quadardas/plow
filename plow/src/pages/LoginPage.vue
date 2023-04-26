@@ -1,5 +1,6 @@
 <template>
-  <div class="login-page">
+  <div v-if="isLoaded"><Loader /></div>
+  <div v-else class="login-page">
     <form class="login" @submit.prevent="login">
       <h1>Авторизация</h1>
       <label>Логин</label>
@@ -16,22 +17,28 @@
         type="password"
         placeholder="Пароль"
       />
-
       <button type="submit">Login</button>
     </form>
   </div>
 </template>
 <script lang="ts" setup>
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import api from "../axios";
 import { Auth } from "../services/auth.service";
+import Loader from "../components/modals/Loader.vue";
+import { useRouter } from "vue-router";
+
 const userLogin = reactive({
   login: "",
   password: "",
 });
 async function login() {
-  await Auth.login(userLogin.login, userLogin.password);
+  isLoaded.value = true;
+  await Auth.login(userLogin.login, userLogin.password, router);
+  isLoaded.value = false;
 }
+const router = useRouter();
+let isLoaded = ref();
 </script>
 
 <style lang="scss" scoped>

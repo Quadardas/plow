@@ -8,7 +8,7 @@ import UserCreate from "@/pages/UserCreate.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: '/', component: () => HomeView },
+    { path: '/taskList', component: () => HomeView },
     { path: '/login', component: () => LoginPage},
     { path: '/workers', component: () => WorkerPage},
     {path: "/createUser", component:()=> UserCreate},

@@ -7,7 +7,12 @@
     <input v-model="userInfo.password" type="text" placeholder="Password" />
     <button @click="createUser" :disabled="!isChecked">Создать</button>
   </div>
-  <p>{{ store.userName }}</p>
+  <div class="user-list">
+    <div v-for="user in usersList" :key="user.Key">{{ user.Name }}</div>
+  </div>
+  <div class="user-list">
+    <div v-for="user in usersRole" :key="user.Key">{{ user.Surname }}</div>
+  </div>
 </template>
 <script lang="ts" setup>
 import { computed, defineComponent, onBeforeMount, reactive, ref } from "vue";
@@ -35,6 +40,15 @@ async function createUser() {
     ...userInfo,
   });
   clearInputs();
+  userList();
+}
+const usersList = ref();
+const usersRole = ref();
+async function userList() {
+  usersList.value = await api.get("/getAllUsers").then((res) => res.data);
+}
+async function userRole() {
+  usersRole.value = await api.get("/getAllUserRoles").then((res) => res.data);
 }
 
 function clearInputs() {
@@ -46,6 +60,8 @@ function clearInputs() {
 }
 onBeforeMount(async () => {
   if (!store.isLogin) await Auth.refresh();
+  userList();
+  userRole();
 });
 </script>
 <style lang="scss" scoped>

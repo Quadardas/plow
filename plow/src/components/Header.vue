@@ -6,7 +6,7 @@
     <div class="header__list">
       <ul>
         <li class="header__link">
-          <router-link to="/" class="">Список задач</router-link>
+          <router-link to="/taskList" class="">Список задач</router-link>
         </li>
         <li class="header__link">
           <router-link to="login">Авторизация</router-link>
