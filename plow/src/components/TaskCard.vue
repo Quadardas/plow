@@ -2,8 +2,8 @@
   <div class="tasks">
     <div class="task-card my-style">
       <!-- <h4>{{ task?.id }}</h4> -->
-      <p>{{ task?.name }}</p>
-      <p>{{ task?.description }}</p>
+      <p>{{ task?.Name }}</p>
+      <p>{{ task?.Description }}</p>
       <p>Исполнитель: {{ workerName ?? " Нет" }}</p>
     </div>
   </div>

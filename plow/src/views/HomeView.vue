@@ -25,7 +25,7 @@
       </Modal>
     </div>
     <div v-else>
-      <div v-if="!unspreadedTasks">нет задач</div>
+      <div v-if="!unspreadedTasks?.length">нет задач</div>
       <div v-else>
         <TaskCard
           v-for="(task, key) in unspreadedTasks"
@@ -40,7 +40,7 @@
 
 <script lang="ts" setup>
 import TaskCard from "../components/TaskCard.vue";
-import { computed, inject, ref } from "vue";
+import { computed, inject, onBeforeMount, ref } from "vue";
 import type { ITask } from "@/models/task.model";
 import WorkerCard from "@/components/WorkerCard.vue";
 import type { IWorker } from "@/models/worker.model";
@@ -52,6 +52,11 @@ import Modal from "@/components/modals/Modal.vue";
 import CreateTask from "@/components/modals/CreateTask.vue";
 import { TASKS } from "@/constants/tasks.const";
 import EditTask from "@/components/modals/EditTask.vue";
+import { Auth } from "../services/auth.service";
+import { useUserStore } from "../stores/user";
+import { useRoute } from "vue-router";
+import api from "../axios";
+
 // const taskList = computed(() =>
 //   workers.value
 //     ?.map((worker) =>
@@ -67,23 +72,31 @@ import EditTask from "@/components/modals/EditTask.vue";
 
 const rules = ref<Array<ITreeRule>>(RULES);
 const workers = ref<Array<IWorker>>(WORKERS);
-const tasks = ref<Array<ITask>>(TASKS);
+const tasks = ref<Array<ITask>>([]);
 const showModal = ref(false);
 const showTask = ref(false);
 const firstActive = ref(true);
 const taskList = computed(() => tasks.value);
 const selectedTask = ref();
+const store = useUserStore();
+const route = useRoute();
 const spreadedTasks = computed(() =>
-  tasks.value.filter((task, index) => task.worker)
+  tasks.value?.filter((task, index) => task.Worker)
 );
-const unSpreadedTasks = computed(() =>
-  tasks.value.filter((task) => !task.worker)
+const unspreadedTasks = computed(() =>
+  tasks.value?.filter((task) => !task.Worker)
 );
 
 function onTaskClick(task) {
   selectedTask.value = task;
   showTask.value = true;
 }
+onBeforeMount(async () => {
+  if (!store.isLogin) await Auth.refresh();
+  tasks.value = await api
+    .get(`/getNodeTasks/${route.params.id}`)
+    .then((res) => res.data);
+});
 </script>
 
 <style lang="scss" scoped>
