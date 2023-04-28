@@ -9,20 +9,19 @@
       </h2>
     </div>
     <div v-if="firstActive">
-      <TaskCard
-        v-for="(task, key) in spreadedTasks"
-        :key="key"
-        :task="task"
-        @click="onTaskClick(task)"
-      />
-      <Modal :show="showTask" @close="showTask = false" @ok="showTask = false">
+      <TaskCard v-for="(task, key) in spreadedTasks" :key="key" :task="task" />
+      <button @click="showModal = true">Создать задачу</button>
+      <Modal
+        :show="showModal"
+        :modalComponent="CreateTask"
+        @close="showModal = false"
+        @ok="createTask"
+      >
         <template #header>
-          <h3>Просмотр задачи</h3>
-        </template>
-        <template #body>
-          <EditTask :task="selectedTask" />
+          <h3>Создание задачи</h3>
         </template>
       </Modal>
+      <!-- <button @click="postButton">dfgdsg</button> -->
     </div>
     <div v-else>
       <div v-if="!unspreadedTasks?.length">нет задач</div>
@@ -74,22 +73,32 @@ const rules = ref<Array<ITreeRule>>(RULES);
 const workers = ref<Array<IWorker>>(WORKERS);
 const tasks = ref<Array<ITask>>([]);
 const showModal = ref(false);
-const showTask = ref(false);
+
 const firstActive = ref(true);
 const taskList = computed(() => tasks.value);
 const selectedTask = ref();
+const showTask = ref(false);
 const store = useUserStore();
 const route = useRoute();
 const spreadedTasks = computed(() =>
-  tasks.value?.filter((task, index) => task.Worker)
+  tasks.value?.filter((task, index) => task.worker)
 );
 const unspreadedTasks = computed(() =>
-  tasks.value?.filter((task) => !task.Worker)
+  tasks.value?.filter((task) => !task.worker)
 );
 
-function onTaskClick(task) {
-  selectedTask.value = task;
-  showTask.value = true;
+// async function postButton() {
+//   await api.post(`/addDictionary/task_type`, {
+//     name: "Backend",
+//     shName: "Bc",
+//   });
+// }
+
+async function createTask(Event) {
+  await api.post("/addTask", {
+    ...Event,
+  });
+  showModal.value = false;
 }
 onBeforeMount(async () => {
   if (!store.isLogin) await Auth.refresh();

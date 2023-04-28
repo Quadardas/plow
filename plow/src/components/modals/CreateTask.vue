@@ -1,57 +1,87 @@
 <template>
   <form action="">
+    <input v-model="taskName" type="text" placeholder="Название задачи" />
     <input
-      v-model="currentRule.name"
-      type="text"
-      placeholder="Название задачи"
-    />
-    <input
-      v-model="currentRule.description"
+      v-model="taskDescription"
       type="text"
       placeholder="Описание задачи"
     />
-    <select v-model="currentRule.priority">
-      <option class="placeholder" selected disabled value="">Приоритет</option>
-      <option value="Низкий">Низкий</option>
-      <option value="Средний">Средний</option>
-      <option value="Высокий">Высокий</option>
-      <option value="Наивысший">Наивысший</option>
-    </select>
-    <select v-model="currentRule.type">
-      <option class="placeholder" selected disabled value="">
-        Направление
+    <select v-model="selectedPriority">
+      <option
+        v-for="priority in priorityOptions"
+        :key="priority.Key"
+        :value="priority.Key"
+      >
+        {{ priority.Name }}
       </option>
-      <option value="фронт">фронт</option>
-      <option value="бэк">бэк</option>
     </select>
+    <select v-model="selectedType">
+      <option v-for="type in typeOptions" :key="type.Key" :value="type.Key">
+        {{ type.Name }}
+      </option>
+    </select>
+    <input type="date" v-model="taskOpen" />
+    <input type="date" v-model="taskPlanClose" />
   </form>
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from "vue";
+import { onBeforeMount, ref, watch } from "vue";
+import { useRoute } from "vue-router";
+import api from "../../axios";
+import type { IDictionary } from "../../models/dictionary.model";
+import type { ITask } from "../../models/task.model";
 
 const props = defineProps<{
-  modelValue: any;
+  task: ITask;
 }>();
+
+const priorityOptions = ref<Array<IDictionary>>();
+const typeOptions = ref<Array<IDictionary>>();
+const selectedPriority = ref(props.task?.PriorityName);
+const taskInstance = ref(props.task);
+const selectedType = ref(props.task?.type?.Name);
+const taskName = ref();
+const taskDescription = ref();
+const taskOpen = ref();
+const taskPlanClose = ref();
+const route = useRoute();
 
 const emits = defineEmits<{
   (e: "update:modelValue", value: any);
 }>();
 
-const currentRule = ref({
-  name: "",
-  description: "",
-  priority: "",
-  type: "",
-});
-
 watch(
-  () => currentRule.value,
-  (newValue) => emits("update:modelValue", newValue),
+  () => [
+    taskName.value,
+    taskDescription.value,
+    taskOpen.value,
+    taskPlanClose.value,
+    selectedType.value,
+    selectedPriority.value,
+  ],
+  (newValue) =>
+    emits("update:modelValue", {
+      name: taskName.value,
+      description: taskDescription.value,
+      openDate: taskOpen.value,
+      plannedDate: taskPlanClose.value,
+      priorityKey: selectedPriority.value,
+      nodeKey: +route.params.id,
+      typeKey: selectedType.value,
+    }),
   {
     deep: true,
   }
 );
+onBeforeMount(async () => {
+  priorityOptions.value = await api
+    .get("/getDictionary/priority")
+    .then((res) => res.data);
+  typeOptions.value = await api
+    .get("/getDictionary/task_type")
+    .then((res) => res.data);
+});
 </script>
 
 <style lang="scss">

@@ -11,19 +11,6 @@
         <li class="header__link">
           <router-link to="login">Авторизация</router-link>
         </li>
-        <li class="header__link" @click="showModal = true">
-          <router-link to="" class="">Создать задачу</router-link>
-          <Modal
-            :show="showModal"
-            :modalComponent="CreateTask"
-            @close="showModal = false"
-            @ok="showModal = false"
-          >
-            <template #header>
-              <h3>Создание задачи</h3>
-            </template>
-          </Modal>
-        </li>
         <li class="header__link">
           <router-link to="createUser">Создание Пользователя</router-link>
         </li>
@@ -58,6 +45,7 @@ const showModal = ref(false);
 
     ul {
       list-style: none;
+      padding-left: 5px;
 
       // display: flex;
 
