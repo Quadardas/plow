@@ -55,6 +55,7 @@ import { Auth } from "../services/auth.service";
 import { useUserStore } from "../stores/user";
 import { useRoute } from "vue-router";
 import api from "../axios";
+import { DecideTree } from "../services/decideTree.service";
 
 // const taskList = computed(() =>
 //   workers.value
@@ -70,10 +71,9 @@ import api from "../axios";
 // );
 
 const rules = ref<Array<ITreeRule>>(RULES);
-const workers = ref<Array<IWorker>>(WORKERS);
 const tasks = ref<Array<ITask>>([]);
 const showModal = ref(false);
-
+const workers = ref();
 const firstActive = ref(true);
 const taskList = computed(() => tasks.value);
 const selectedTask = ref();
@@ -86,6 +86,7 @@ const spreadedTasks = computed(() =>
 const unspreadedTasks = computed(() =>
   tasks.value?.filter((task) => !task.worker)
 );
+const dt = new DecideTree();
 
 // async function postButton() {
 //   await api.post(`/addDictionary/task_type`, {
@@ -94,17 +95,44 @@ const unspreadedTasks = computed(() =>
 //   });
 // }
 
+async function loadData() {
+  tasks.value = await api
+    .get(`/getNodeTasks/${route.params.id}`)
+    .then((res) => res.data);
+  workers.value = await api
+    .get(`/getNodeUsers/${route.params.id}`)
+    .then((res) => res.data);
+  workers.value = await Promise.all(
+    workers.value.map(async (el) => {
+      const tasks = await api
+        .get(`/getUserTasks/${el.PhysKey}?nodeKey=${route.params.id}`)
+        .then((res) => res.data);
+      const times = await api
+        .get(`/getTimetrack/${el.RoleKey}`)
+        .then((res) => res.data);
+      const timesLength = times?.length;
+      const avgTime =
+        times?.reduce((acc, val) => (acc = acc + val.Time), 0) / timesLength;
+
+      return {
+        ...el,
+        tasks,
+        avgTime: dt.getAvgTimeValue(avgTime),
+      };
+    })
+  );
+}
+
 async function createTask(Event) {
   await api.post("/addTask", {
     ...Event,
   });
   showModal.value = false;
+  await loadData();
 }
 onBeforeMount(async () => {
   if (!store.isLogin) await Auth.refresh();
-  tasks.value = await api
-    .get(`/getNodeTasks/${route.params.id}`)
-    .then((res) => res.data);
+  await loadData();
 });
 </script>
 

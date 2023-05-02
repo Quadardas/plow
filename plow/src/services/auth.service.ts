@@ -17,11 +17,10 @@ export class Auth {
         store.setUser(userInfo)
         
         Cookies.set("key", userInfo.Key)
-        Cookies.set("token",authResult.token )
-      
+        Cookies.set("token", authResult.token)
         router.push("/taskList");
     }
-    static async refresh(){
+    static async refresh(){ 
         const key = Cookies.get("key")
         const token = Cookies.get('token')
 

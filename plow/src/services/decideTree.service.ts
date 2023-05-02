@@ -21,6 +21,18 @@ export class DecideTree {
     return this.decide(workers, rules, task);
   }
 
+  public getAvgTimeValue(time: number) {
+    if (!time) {
+      return;
+    } 
+
+    if (time > 180) {
+      return EAvgTime.More
+    }
+
+    return EAvgTime.Less
+  }
+
   private getWorkers(): Array<IWorker> {
     return WORKERS;
   }

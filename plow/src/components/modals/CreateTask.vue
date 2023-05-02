@@ -96,5 +96,8 @@ form {
       display: none;
     }
   }
+  input {
+    height: 50px;
+  }
 }
 </style>
