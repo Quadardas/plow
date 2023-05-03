@@ -1,5 +1,5 @@
 <template>
-  <form action="">
+  <div action="">
     <input
       v-model="taskInstance.Name"
       type="text"
@@ -43,25 +43,66 @@
       >
       <p>Стаж: {{ taskInstance.worker?.DutyName }}</p>
     </div>
-  </form>
+    <div>
+      <input class="time" v-model="taskTime" type="text" />
+      <button @click="regTime">hjsorfligh</button>
+    </div>
+    <div>
+      <select v-model="directTask">
+        <option v-for="user in userList" :key="user.Key" :value="user.RoleKey">
+          {{ user.Name }}
+        </option>
+      </select>
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
-import { onBeforeMount, ref } from "vue";
+import { onBeforeMount, ref, watch } from "vue";
 import api from "../../axios";
 import type { ITask } from "../../models/task.model";
 import type { IDictionary } from "../../models/dictionary.model";
+import { useUserStore } from "../../stores/user";
+import type { IWorkerInfo } from "../../models/worker.model";
+import { getNodeWorkers } from "../../utils/getWorkers.util";
+import { useRoute } from "vue-router";
 
 const props = defineProps<{
   task: ITask;
 }>();
 
+const store = useUserStore();
 const selectedPriority = ref(props.task.PriorityName);
 const taskInstance = ref(props.task);
 const priorityOptions = ref<Array<IDictionary>>();
 const typeOptions = ref<Array<IDictionary>>();
 const selectedType = ref(props.task.type.Name);
+const taskTime = ref();
 const date = new Date(taskInstance.value.OpenDate).toLocaleDateString("ru-RU");
+const directTask = ref(taskInstance.value?.worker?.RoleKey);
+const userList = ref<Array<IWorkerInfo>>([]);
+const route = useRoute();
+
+const regTime = async () => {
+  await api
+    .post("addTimetrack", {
+      taskKey: taskInstance.value.TaskKey,
+      roleKey: store.user.Role_Key,
+      time: taskTime.value,
+    })
+    .then((res) => res.data);
+};
+
+watch(
+  () => directTask.value,
+  async (newValue) => {
+    await api.post("/connectRoleTask", {
+      taskKey: taskInstance.value.TaskKey,
+      roleKey: newValue,
+    });
+  }
+);
+
 onBeforeMount(async () => {
   priorityOptions.value = await api
     .get("/getDictionary/priority")
@@ -69,6 +110,7 @@ onBeforeMount(async () => {
   typeOptions.value = await api
     .get("/getDictionary/task_type")
     .then((res) => res.data);
+  userList.value = await getNodeWorkers(+route.params.id);
 });
 </script>
 <style lang="scss">
@@ -78,6 +120,13 @@ form {
   display: flex;
   flex-direction: column;
   height: 60%;
+  input {
+    height: 30px;
+  }
+  .time {
+    max-height: 20px;
+    max-width: 100px;
+  }
   select {
     max-width: 110px;
     .placeholder {

@@ -9,7 +9,7 @@
           <router-link to="/projects" class="">Проекты</router-link>
         </li>
         <li class="header__link">
-          <router-link to="createUser">Создание Пользователя</router-link>
+          <router-link to="/createUser">Создание Пользователя</router-link>
         </li>
       </ul>
       <div class="header__link button">

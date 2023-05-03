@@ -31,7 +31,7 @@
           :key="key"
           :task="task"
         />
-        <button>Распределить</button>
+        <button @click="onTaskSpread">Распределить</button>
       </div>
     </div>
   </div>
@@ -56,24 +56,14 @@ import { useUserStore } from "../stores/user";
 import { useRoute } from "vue-router";
 import api from "../axios";
 import { DecideTree } from "../services/decideTree.service";
-
-// const taskList = computed(() =>
-//   workers.value
-//     ?.map((worker) =>
-//     ({
-//       ...worker,
-//       tasks: worker.tasks.map((task) => ({
-//         ...task,
-//         worker: worker.name,
-//       })),
-//     }))
-//     .reduce((acc, worker) => [...acc, ...worker.tasks], [])
-// );
+import { getNodeWorkers } from "../utils/getWorkers.util";
+import type { IWorkerInfo } from "../models/worker.model";
+import { ETreeResult } from "../enums/treeCriteria.enum";
 
 const rules = ref<Array<ITreeRule>>(RULES);
 const tasks = ref<Array<ITask>>([]);
 const showModal = ref(false);
-const workers = ref();
+const workers = ref<Array<IWorkerInfo>>();
 const firstActive = ref(true);
 const taskList = computed(() => tasks.value);
 const selectedTask = ref();
@@ -88,39 +78,30 @@ const unspreadedTasks = computed(() =>
 );
 const dt = new DecideTree();
 
-// async function postButton() {
-//   await api.post(`/addDictionary/task_type`, {
-//     name: "Backend",
-//     shName: "Bc",
-//   });
-// }
+async function onTaskSpread() {
+  await Promise.all(
+    tasks.value.map(async (task) => {
+      const worker = dt.startMethod(task, workers.value);
+
+      if (worker !== ETreeResult.Uncalculated) {
+        await api.post("/connectRoleTask", {
+          taskKey: task.TaskKey,
+          roleKey: worker.RoleKey,
+        });
+      }
+    })
+  );
+  await loadData();
+}
 
 async function loadData() {
+  await api.get("/getDictionary/duty");
+
   tasks.value = await api
     .get(`/getNodeTasks/${route.params.id}`)
     .then((res) => res.data);
-  workers.value = await api
-    .get(`/getNodeUsers/${route.params.id}`)
-    .then((res) => res.data);
-  workers.value = await Promise.all(
-    workers.value.map(async (el) => {
-      const tasks = await api
-        .get(`/getUserTasks/${el.PhysKey}?nodeKey=${route.params.id}`)
-        .then((res) => res.data);
-      const times = await api
-        .get(`/getTimetrack/${el.RoleKey}`)
-        .then((res) => res.data);
-      const timesLength = times?.length;
-      const avgTime =
-        times?.reduce((acc, val) => (acc = acc + val.Time), 0) / timesLength;
 
-      return {
-        ...el,
-        tasks,
-        avgTime: dt.getAvgTimeValue(avgTime),
-      };
-    })
-  );
+  workers.value = await getNodeWorkers(+route.params.id);
 }
 
 async function createTask(Event) {

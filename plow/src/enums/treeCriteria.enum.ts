@@ -1,15 +1,15 @@
 export enum ETypeWorker {
-	Frontend = "Фронтенд",
-  Backend = "Бэкенд",
-	Analytics = 'Аналитик',
-	QA = 'Тестировщик',
-	Designer = 'Дизайнер'
+	Frontend = "FrontEnd",
+  	Backend = "Backend",
+	Analytics = 'Analytics',
+	QA = 'QA',
+	Designer = 'Designer'
 }
 
 export enum EWorkerExp {
-  Junior = "Джуниор",
-  Middle = "Мидл",
-  Senior = "Сеньор",
+  Junior = "Junior",
+  Middle = "Middle",
+  Senior = "Senior",
 }
 
 export enum EAvgTime {

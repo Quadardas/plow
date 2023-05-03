@@ -10,8 +10,16 @@ export interface IWorker {
 }
 
 export interface IWorkerInfo {
-  type: ETypeWorker;
-  exp: EWorkerExp;
-  avgTime: EAvgTime;
-  tasksEnum?: ETaskCount;
+  DutyKey: number;
+  DutyName: ETypeWorker;
+  ExpName: EWorkerExp;
+  Login: string;
+  Name: string;
+  Patron: string;
+  PhysKey: string;
+  RoleKey: string;
+  Surname: string;
+  AvgTime: EAvgTime;
+  Role: string;
+  tasks: Array<ITask>;
 }

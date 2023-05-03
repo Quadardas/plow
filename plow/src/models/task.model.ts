@@ -9,8 +9,8 @@ export interface ITask {
   OpenDate: string;
   PlannedCloseDate: string;
   FactCloseDate?:string;
-  PriorityKey: ETaskPriorities;
-  PriorityName: string;
+  PriorityKey: number;
+  PriorityName: ETaskPriorities;
   PrioriyShName?:string;
   NodeKey: number;
   NodeName: string;

@@ -27,7 +27,7 @@ const openProject = (key) => {
 onBeforeMount(async () => {
   if (!store.isLogin) await Auth.refresh();
   projects.value = await api
-    .get(`getUserNodes/${store.user.Role_Key}`)
+    .get(`getUserNodes/${store.user.Key}`)
     .then((res) => res.data);
 });
 </script>

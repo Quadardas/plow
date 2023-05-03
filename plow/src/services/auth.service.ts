@@ -11,9 +11,10 @@ export class Auth {
         if(!authResult){
             return;
         }
-        
+     
         const userInfo = await api.get(`/getUserInfo/${authResult?.key}`).then((res)=> res.data)  
         const store = useUserStore();
+        console.log(userInfo)
         store.setUser(userInfo)
         
         Cookies.set("key", userInfo.Key)
