@@ -20,14 +20,14 @@
       </option>
     </select>
     <select v-model="selectedType">
-      <option v-for="type in typeOptions" :key="type.Key" :value="type.Name">
-        {{ type.Name }}
+      <option v-for="types in typeOptions" :key="types.Key" :value="types.Name">
+        {{ types.Name }}
       </option>
     </select>
     <span
       >Дата открытия задачи:
-      {{ new Date(taskInstance.OpenDate).toLocaleDateString("ru-RU") }}</span
-    >
+      {{ new Date(taskInstance.OpenDate).toLocaleDateString("ru-RU") }}
+    </span>
     <span
       >Планируемая дата закрытия задачи:
       {{
@@ -41,7 +41,7 @@
         >ФИО: {{ taskInstance.worker?.Surname }}
         {{ taskInstance.worker?.Name }} {{ taskInstance.worker?.Patron }}</span
       >
-      <p>Стаж: {{ taskInstance.worker?.DutyName }}</p>
+      <p>Стаж: {{ taskInstance.worker?.ExpName }}</p>
     </div>
     <div>
       <input class="time" v-model="taskTime" type="text" />
@@ -71,6 +71,10 @@ const props = defineProps<{
   task: ITask;
 }>();
 
+const emits = defineEmits<{
+  (e: "update"): void;
+}>();
+
 const store = useUserStore();
 const selectedPriority = ref(props.task.PriorityName);
 const taskInstance = ref(props.task);
@@ -96,10 +100,11 @@ const regTime = async () => {
 watch(
   () => directTask.value,
   async (newValue) => {
-    await api.post("/connectRoleTask", {
+    await api.patch("/updateRoleTask", {
       taskKey: taskInstance.value.TaskKey,
       roleKey: newValue,
     });
+    emits("update");
   }
 );
 

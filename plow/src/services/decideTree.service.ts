@@ -11,6 +11,10 @@ export class DecideTree {
   }
 
   private getTasksLength(length: number): ETaskCount {
+    if (!length) {
+      return ETaskCount.Low
+    }
+
     if (length >= 3) {
       return ETaskCount.High
     }
@@ -19,7 +23,7 @@ export class DecideTree {
 
   public getAvgTimeValue(time: number) {
     if (!time) {
-      return;
+      return EAvgTime.Less;
     } 
 
     if (time > 180) {
@@ -38,22 +42,20 @@ export class DecideTree {
       return ETreeResult.Uncalculated;
     } 
     
-
     rules = rules.filter((rule) => rule.priority === task.PriorityName && rule.type === task.type.Name);
     workers = workers.filter((worker) => worker.DutyName === task.type.Name);
 
     const fastWorker = workers.filter((worker)=>
-    worker.AvgTime === EAvgTime.Less)?.[0];
+    worker.avgTime === EAvgTime.Less)?.[0];
     
     if (fastWorker){
       return fastWorker;
     }
-
     return workers.filter((worker) => 
-      rules.find((rule) => 
+      !!rules.find((rule) => 
         rule.exp === worker.ExpName && 
-        rule.avgTime === worker.AvgTime && 
-        this.getTasksLength(worker.tasks?.length || 0) === rule.tasksCount
+        rule.avgTime === worker.avgTime && 
+        this.getTasksLength(worker.tasks?.length) === rule.tasksCount
       )
     )?.[0] ?? ETreeResult.Uncalculated;
   }

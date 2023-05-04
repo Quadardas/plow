@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
+
+body{
+	font-family: 'Kanit', sans-serif;
+}
+
+button{
+	background-color: rgb(86, 40, 255);
+	border: none;
+	border-radius: 5px;
+	padding: 10px 15px;
+	color: white;
+	font-weight: 700;
+
+	&:has(span){
+		border-radius: 2px;
+		padding: 5px 10px;
+	}
+	span{
+		
+		font-size: 18px !important;
+	}
+}
+
+.material-symbols-outlined {
+	font-variation-settings:
+		'FILL' 0,
+		'wght' 400,
+		'GRAD' 0,
+		'opsz' 48
+}

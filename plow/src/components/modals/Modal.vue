@@ -3,8 +3,8 @@
     <Transition name="modal">
       <div v-if="show" class="modal-mask">
         <div class="modal-container">
-          <button class="modal-container__close" @click="$emit('close')">
-            Закрыть
+          <button class="modal-container__close close" @click="$emit('close')">
+            <span class="material-symbols-outlined"> close </span>
           </button>
           <div>
             <div class="modal-header">
@@ -15,6 +15,7 @@
               v-if="modalComponent"
               :is="modalComponent"
               v-model="componentModelValue"
+              @update="onCustomEvent"
             />
 
             <div v-else class="modal-body">
@@ -24,6 +25,7 @@
           <div class="modal-footer">
             <slot name="footer">
               <button
+                v-if="!hideOkButton"
                 class="modal-default-button"
                 @click="$emit('ok', componentModelValue)"
               >
@@ -47,18 +49,24 @@ withDefaults(
     okButtonText: string;
     task: any;
     modalComponent?: Component;
+    hideOkButton?: boolean;
   }>(),
   {
-    okButtonText: "ОК",
+    okButtonText: "Сохранить изменения",
   }
 );
 
-defineEmits<{
+const emits = defineEmits<{
   (e: "close"): void;
-  (e: "ok", value: null | any);
+  (e: "ok", value: null | any): void;
+  (e: "update"): void;
 }>();
 
 const componentModelValue = ref();
+
+function onCustomEvent() {
+  emits("update");
+}
 </script>
 
 <style lang="scss" scoped>

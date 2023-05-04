@@ -9,7 +9,12 @@
       </h2>
     </div>
     <div v-if="firstActive">
-      <TaskCard v-for="(task, key) in spreadedTasks" :key="key" :task="task" />
+      <TaskCard
+        v-for="(task, key) in spreadedTasks"
+        :key="key"
+        :task="task"
+        @update="loadData"
+      />
       <button @click="showModal = true">Создать задачу</button>
       <Modal
         :show="showModal"
@@ -32,6 +37,19 @@
           :task="task"
         />
         <button @click="onTaskSpread">Распределить</button>
+        <div>
+          <button @click="showModal = true">Добавить пользователя</button>
+          <Modal
+            :show="showModal"
+            :modalComponent="AddUserToProject"
+            @close="showModal = false"
+            hideOkButton
+          >
+            <template #header>
+              <h3>Добавление пользователя к проекту</h3>
+            </template>
+          </Modal>
+        </div>
       </div>
     </div>
   </div>
@@ -39,18 +57,12 @@
 
 <script lang="ts" setup>
 import TaskCard from "../components/TaskCard.vue";
-import { computed, inject, onBeforeMount, ref } from "vue";
+import { computed, onBeforeMount, ref } from "vue";
 import type { ITask } from "@/models/task.model";
-import WorkerCard from "@/components/WorkerCard.vue";
-import type { IWorker } from "@/models/worker.model";
-import { WORKERS } from "@/constants/workers.const";
-import RulesItem from "@/components/RulesItem.vue";
 import type { ITreeRule } from "@/models/rule.model";
 import { RULES } from "@/constants/rules.const";
-import Modal from "@/components/modals/Modal.vue";
+import Modal from "../components/modals/Modal.vue";
 import CreateTask from "@/components/modals/CreateTask.vue";
-import { TASKS } from "@/constants/tasks.const";
-import EditTask from "@/components/modals/EditTask.vue";
 import { Auth } from "../services/auth.service";
 import { useUserStore } from "../stores/user";
 import { useRoute } from "vue-router";
@@ -59,6 +71,7 @@ import { DecideTree } from "../services/decideTree.service";
 import { getNodeWorkers } from "../utils/getWorkers.util";
 import type { IWorkerInfo } from "../models/worker.model";
 import { ETreeResult } from "../enums/treeCriteria.enum";
+import AddUserToProject from "..//components/modals/AddUserToProject.vue";
 
 const rules = ref<Array<ITreeRule>>(RULES);
 const tasks = ref<Array<ITask>>([]);
@@ -70,6 +83,7 @@ const selectedTask = ref();
 const showTask = ref(false);
 const store = useUserStore();
 const route = useRoute();
+
 const spreadedTasks = computed(() =>
   tasks.value?.filter((task, index) => task.worker)
 );
@@ -81,7 +95,7 @@ const dt = new DecideTree();
 async function onTaskSpread() {
   await Promise.all(
     tasks.value.map(async (task) => {
-      const worker = dt.startMethod(task, workers.value);
+      const worker = dt.startMethod(task, workers.value ?? []);
 
       if (worker !== ETreeResult.Uncalculated) {
         await api.post("/connectRoleTask", {

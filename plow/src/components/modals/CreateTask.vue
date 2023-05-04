@@ -16,8 +16,8 @@
       </option>
     </select>
     <select v-model="selectedType">
-      <option v-for="type in typeOptions" :key="type.Key" :value="type.Key">
-        {{ type.Name }}
+      <option v-for="types in typeOptions" :key="types.Key" :value="types.Key">
+        {{ types.Name }}
       </option>
     </select>
     <input type="date" v-model="taskOpen" />

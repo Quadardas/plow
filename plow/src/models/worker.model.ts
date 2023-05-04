@@ -16,10 +16,10 @@ export interface IWorkerInfo {
   Login: string;
   Name: string;
   Patron: string;
-  PhysKey: string;
+  PhysKey: number;
   RoleKey: string;
   Surname: string;
-  AvgTime: EAvgTime;
+  avgTime: EAvgTime;
   Role: string;
   tasks: Array<ITask>;
 }

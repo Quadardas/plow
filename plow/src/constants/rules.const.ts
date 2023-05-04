@@ -116,5 +116,14 @@ export const RULES: Array<ITreeRule> = [
     priority: ETaskPriorities.High,
     result: ETreeResult.Apply,
     type: ETypeWorker.Backend,
+  },
+  {
+    id: 13,
+    exp: EWorkerExp.Middle,
+    tasksCount: ETaskCount.Low,
+    avgTime: EAvgTime.Less,
+    priority: ETaskPriorities.High,
+    result: ETreeResult.Apply,
+    type: ETypeWorker.QA,
   }  
 ]
