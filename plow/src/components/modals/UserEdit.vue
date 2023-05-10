@@ -24,46 +24,22 @@
         {{ role.Role_Name }}
       </option>
     </select>
-    <button @click="createUser" :disabled="!isChecked">Создать</button>
   </div>
-  <div class="user-list">
-    <div
-      class="user"
-      v-for="user in usersList"
-      :key="user.Key"
-      @click="onUserEdit(user.Key)"
-    >
-      {{ user.Name }}
-    </div>
-  </div>
-  <Modal
-    :show="showModal"
-    :modalComponent="UserEdit"
-    @close="showModal = false"
-    :componentProps="{
-      userKey: currentUser,
-    }"
-  >
-    <template #header>
-      <h3>Редактирование пользователя</h3>
-    </template>
-  </Modal>
-  <!-- <div class="user-list">
-    <div v-for="user in usersRole" :key="user.Key">{{ user.Surname }}</div>
-  </div> -->
 </template>
-
 <script lang="ts" setup>
 import { computed, defineComponent, onBeforeMount, reactive, ref } from "vue";
-import api from "../axios";
-import type { IDictionary } from "../models/dictionary.model";
-import { Auth } from "../services/auth.service";
-import { useUserStore } from "../stores/user";
-import UserEdit from "../components/modals/UserEdit.vue";
-import Modal from "@/components/modals/Modal.vue";
+import api from "../../axios";
+import type { IDictionary } from "../../models/dictionary.model";
+import type { ITask } from "../../models/task.model";
+import { Auth } from "../../services/auth.service";
+import { useUserStore } from "../../stores/user";
+
+const props = defineProps<{
+  userKey: number;
+  task: ITask;
+}>();
 
 const store = useUserStore();
-const currentUser = ref();
 const showModal = ref(false);
 const isChecked = computed(
   () =>
@@ -86,19 +62,9 @@ const userInfo = reactive({
   exp: "",
   userRoleKey: "",
 });
-const usersList = ref();
 const usersRole = ref();
 const duties = ref<Array<IDictionary>>();
 const exps = ref<Array<IDictionary>>();
-
-function onUserEdit(key: number) {
-  currentUser.value = key;
-  showModal.value = true;
-}
-
-async function userList() {
-  usersList.value = await api.get("/getAllUsers").then((res) => res.data);
-}
 
 async function userRole() {
   usersRole.value = await api.get("/getAllUserRoles").then((res) => res.data);
@@ -106,7 +72,7 @@ async function userRole() {
 
 async function createUser() {
   const { Key } = await api
-    .post("/createUser", {
+    .post("/editUser/", {
       ...userInfo,
     })
     .then((res) => res.data);
@@ -116,7 +82,6 @@ async function createUser() {
     expKey: userInfo.exp,
   });
   clearInputs();
-  userList();
 }
 
 function clearInputs() {
@@ -129,42 +94,8 @@ function clearInputs() {
 
 onBeforeMount(async () => {
   if (!store.isLogin) await Auth.refresh();
-  userList();
   userRole();
   duties.value = await api.get("/getDictionary/duty").then((res) => res.data);
   exps.value = await api.get("/getDictionary/exp").then((res) => res.data);
 });
 </script>
-
-<style lang="scss" scoped>
-.create-form {
-  display: flex;
-  flex-direction: column;
-  margin: 20px;
-  max-width: fit-content;
-
-  input {
-    margin-bottom: 5px;
-  }
-  select {
-    margin-bottom: 5px;
-  }
-}
-
-.user-list {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid;
-  padding: 10px;
-  border-radius: 5px;
-  margin: 10px;
-  max-height: 500px;
-  max-width: 50%;
-  .user {
-    border: 1px solid;
-    margin-bottom: 10px;
-    height: 50px;
-    width: 150px;
-  }
-}
-</style>

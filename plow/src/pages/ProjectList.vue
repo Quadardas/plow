@@ -1,13 +1,14 @@
 <template>
-  <div>
-    <div
+  <div class="container">
+    <div class="project-card"
       v-for="project in projects"
       :key="project.Key"
       @click="openProject(project.Key)"
     >
       Название проекта {{ project.Name }}
+   
     </div>
-    <button @click="showModal = true">Создать проект</button>
+    <button class="add-project-btn" @click="showModal = true">Создать проект</button>
     <Modal
       :show="showModal"
       :modalComponent="CreateProject"
@@ -18,7 +19,9 @@
         <h3>Создание нового проекта</h3>
       </template>
     </Modal>
+  
   </div>
+  
 </template>
 <script lang="ts" setup>
 import { onBeforeMount, ref } from "vue";
@@ -67,3 +70,34 @@ async function loadData() {
     .then((res) => res.data);
 }
 </script>
+
+<style lang="scss" scoped>
+
+.container {
+  // display: flex;
+  height: 100%;
+  width: 100%;
+  margin: 10px;
+  
+.project-card {
+  display: flex;
+  flex-direction: column;
+  height: 75px;
+  width: 350px;
+  border: 1px solid;
+  margin: 10px 20px;
+  padding: 10px;
+  border-radius: 10px;
+  justify-content: space-between;
+  .edit-project-btn{
+    width: fit-content;
+    
+  }
+}
+.add-project-btn{
+  margin: 10px 20px;
+}
+}
+
+
+</style>

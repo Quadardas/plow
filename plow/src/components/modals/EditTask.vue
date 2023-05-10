@@ -1,5 +1,5 @@
 <template>
-  <div action="">
+  <div class="body" action="">
     <input
       v-model="taskInstance.Name"
       type="text"
@@ -43,9 +43,9 @@
       >
       <p>Стаж: {{ taskInstance.worker?.ExpName }}</p>
     </div>
-    <div>
+    <div class="reg-time">
       <input class="time" v-model="taskTime" type="text" />
-      <button @click="regTime">hjsorfligh</button>
+      <button @click="regTime">Зафиксировать время</button>
     </div>
     <div>
       <select v-model="directTask">
@@ -119,7 +119,7 @@ onBeforeMount(async () => {
 });
 </script>
 <style lang="scss">
-form {
+.body {
   max-width: 100%;
   gap: 8px;
   display: flex;
@@ -140,6 +140,11 @@ form {
   }
   p {
     margin: 0;
+  }
+  .reg-time{
+    .time{
+      margin: 10px;
+    }
   }
 }
 </style>

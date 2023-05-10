@@ -15,6 +15,7 @@
               v-if="modalComponent"
               :is="modalComponent"
               v-model="componentModelValue"
+              v-bind="componentProps"
               @update="onCustomEvent"
             />
 
@@ -50,9 +51,10 @@ withDefaults(
     task: any;
     modalComponent?: Component;
     hideOkButton?: boolean;
+    componentProps?: any;
   }>(),
   {
-    okButtonText: "Сохранить изменения",
+    okButtonText: "Сохранить",
   }
 );
 
@@ -83,7 +85,7 @@ function onCustomEvent() {
 }
 
 .modal-container {
-  height: 50%;
+  height: 55%;
   width: 50%;
   max-width: 100%;
   min-width: 500px;
