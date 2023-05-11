@@ -69,8 +69,6 @@ watch(
       surname: userInfo.value?.Surname, 
       name: userInfo.value?.Name, 
       patron: userInfo.value?.Patron,
-      login: userInfo.value?.Login,
-      password: userInfo.value?.Password,
       userRoleKey: userInfo.value?.User_Role_Key
     })
   },

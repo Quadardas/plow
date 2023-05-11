@@ -33,7 +33,8 @@
       :key="user.Key"
       @click="onUserEdit(user.Key)"
     >
-      {{ user.Name }}
+      <p>{{ user.Name }}</p>
+      <p>{{ getRoleName(user.User_Role_Key) }}</p>  
     </div>
   </div>
   <Modal
@@ -106,6 +107,10 @@ async function userRole() {
   usersRole.value = await api.get("/getAllUserRoles").then((res) => res.data);
 }
 
+function getRoleName(key: number) {
+  return usersRole.value?.find((role) => key === role.RoleKey)?.Role_Name
+}
+
 async function createUser() {
   const { Key } = await api
     .post("/createUser", {
@@ -129,7 +134,9 @@ async function onUserSave(user) {
   })
   await api.patch(`/editRole/${userInstance}`, {
     ...user,
-  })    
+  }) 
+  showModal.value = false;   
+  userList();
 }
 
 function clearInputs() {
@@ -171,13 +178,14 @@ onBeforeMount(async () => {
   padding: 10px;
   border-radius: 5px;
   margin: 10px;
-  max-height: 500px;
+  height: fit-content;
   max-width: 50%;
   .user {
     border: 1px solid;
     margin-bottom: 10px;
     height: 50px;
-    width: 150px;
+    width: fit-content inherit;
+    padding: 5px;
   }
 }
 </style>

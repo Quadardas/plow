@@ -8,8 +8,8 @@
     </div>
     <Modal
       :show="showTask"
-      @close="showTask = false"
-      @ok="showTask = false"
+      @close="onClose"
+      @ok="onClose"
       @update="onUpdate"
     >
       <template #header>
@@ -36,7 +36,12 @@ const props = defineProps<{
   worker: IWorker;
 }>();
 
-defineEmits<{
+function onClose() {
+  showTask.value = false;
+  emits('update')
+}
+
+const emits = defineEmits<{
   (e: "update"): void;
 }>();
 

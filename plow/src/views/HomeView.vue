@@ -35,6 +35,7 @@
           v-for="(task, key) in unspreadedTasks"
           :key="key"
           :task="task"
+          @ok="loadData()"
         />
         <button @click="onTaskSpread">Распределить</button>
         <div>
