@@ -40,6 +40,7 @@
     :show="showModal"
     :modalComponent="UserEdit"
     @close="showModal = false"
+    @ok="onUserSave"
     :componentProps="{
       userKey: currentUser,
     }"
@@ -97,7 +98,8 @@ function onUserEdit(key: number) {
 }
 
 async function userList() {
-  usersList.value = await api.get("/getAllUsers").then((res) => res.data);
+  usersList.value = await api.get("/getAllUsers").then((res) => res.data?.filter((user) => user.Role)
+  );
 }
 
 async function userRole() {
@@ -117,6 +119,17 @@ async function createUser() {
   });
   clearInputs();
   userList();
+}
+async function onUserSave(user) {
+  console.log(user)
+  const userInstance = usersList.value?.find((user) => user.Key === currentUser.value)?.Role.Key
+
+  await api.patch(`/editUser/${currentUser.value}`, {
+    ...user
+  })
+  await api.patch(`/editRole/${userInstance}`, {
+    ...user,
+  })    
 }
 
 function clearInputs() {
