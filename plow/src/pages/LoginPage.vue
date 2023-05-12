@@ -43,6 +43,10 @@ let isLoaded = ref();
 </script>
 
 <style lang="scss" scoped>
+:global(body) {
+  transform: rotate(180DEG);
+}
+
 .login-page {
   width: 360px;
   padding: 8% 0 0;
