@@ -79,6 +79,8 @@ async function loadData() {
   margin: 10px;
   max-height: 100vh;
   overflow-y: scroll;
+  display: flex;
+  flex-wrap: wrap;
 }
   
 .project-card {

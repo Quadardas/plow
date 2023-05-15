@@ -36,7 +36,7 @@ async function login() {
   isLoaded.value = true;
   await Auth.login(userLogin.login, userLogin.password, router);
   isLoaded.value = false;
-  router.push(`/projects/`);
+
 }
 const router = useRouter();
 let isLoaded = ref();

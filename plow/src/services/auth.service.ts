@@ -12,15 +12,13 @@ export class Auth {
             return;
         }
 
-
         const userInfo = await api.get(`/getUserInfo/${authResult?.key}`).then((res) => res.data)
         const store = useUserStore();
-        console.log(userInfo)
         store.setUser(userInfo)
 
         Cookies.set("key", userInfo.Key)
         Cookies.set("token", authResult.token)
-        router.push("/taskList");
+        router.push(`/projects/`);
     }
     static async refresh() {
         const key = Cookies.get("key")
