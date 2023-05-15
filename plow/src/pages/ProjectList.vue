@@ -25,7 +25,6 @@
 </template>
 <script lang="ts" setup>
 import { onBeforeMount, ref } from "vue";
-import type { Ref } from "vue";
 import { useRouter } from "vue-router";
 import api from "../axios";
 import { Auth } from "../services/auth.service";
@@ -78,6 +77,9 @@ async function loadData() {
   height: 100%;
   width: 100%;
   margin: 10px;
+  max-height: 100vh;
+  overflow-y: scroll;
+}
   
 .project-card {
   display: flex;
@@ -97,7 +99,7 @@ async function loadData() {
 .add-project-btn{
   margin: 10px 20px;
 }
-}
+
 
 
 </style>

@@ -26,7 +26,11 @@
     </select>
     <button @click="createUser" :disabled="!isChecked">Создать</button>
   </div>
-  <div class="user-list">
+  <Loader v-if="isDataLoading" />
+  <div 
+    v-else
+    class="user-list"
+  >
     <div
       class="user"
       v-for="user in usersList"
@@ -56,14 +60,16 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineComponent, onBeforeMount, reactive, ref } from "vue";
+import { computed, onBeforeMount, reactive, ref } from "vue";
 import api from "../axios";
 import type { IDictionary } from "../models/dictionary.model";
 import { Auth } from "../services/auth.service";
 import { useUserStore } from "../stores/user";
 import UserEdit from "../components/modals/UserEdit.vue";
 import Modal from "@/components/modals/Modal.vue";
+import Loader from '../components/modals/Loader.vue';
 
+const isDataLoading = ref(false);
 const store = useUserStore();
 const currentUser = ref();
 const showModal = ref(false);
@@ -99,8 +105,7 @@ function onUserEdit(key: number) {
 }
 
 async function userList() {
-  usersList.value = await api.get("/getAllUsers").then((res) => res.data?.filter((user) => user.Role)
-  );
+  usersList.value = await api.get("/getAllUsers").then((res) => res.data?.filter((user) => user.Role));
 }
 
 async function userRole() {
@@ -149,10 +154,12 @@ function clearInputs() {
 
 onBeforeMount(async () => {
   if (!store.isLogin) await Auth.refresh();
+  isDataLoading.value = true;
   userList();
   userRole();
   duties.value = await api.get("/getDictionary/duty").then((res) => res.data);
   exps.value = await api.get("/getDictionary/exp").then((res) => res.data);
+  isDataLoading.value = false;
 });
 </script>
 

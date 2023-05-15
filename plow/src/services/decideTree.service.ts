@@ -7,6 +7,7 @@ import { RULES } from "@/constants/rules.const";
 export class DecideTree {
   public startMethod(task: ITask, workers: Array<IWorkerInfo>): IWorkerInfo | ETreeResult {
     const rules = this.getTreeRules();
+    console.log('workers', workers)
     return this.decide(workers, rules, task);
   }
 
@@ -41,10 +42,10 @@ export class DecideTree {
     if (!rules || !workers || !task) {
       return ETreeResult.Uncalculated;
     } 
-    
+    // console.log('prev workers', workers)
     rules = rules.filter((rule) => rule.priority === task.PriorityName && rule.type === task.type.Name);
     workers = workers.filter((worker) => worker.DutyName === task.type.Name);
-
+    // console.log(rules, workers)
     const fastWorker = workers.filter((worker)=>
     worker.avgTime === EAvgTime.Less)?.[0];
     
