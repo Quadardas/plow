@@ -1,6 +1,6 @@
-import type { ETaskPriorities, ETypeWorker } from "@/enums/treeCriteria.enum";
-import type { IWorker } from "./worker.model";
-import type { IDictionary } from "./dictionary.model";
+import type { ETaskPriorities, ETypeWorker } from @/enums/treeCriteria.enum;
+import type { IWorker } from  ./ worker.model;
+import type { IDictionary } from  ./ dictionary.model;
 
 export interface ITask {
   TaskKey: number;
@@ -8,18 +8,18 @@ export interface ITask {
   Description: string;
   OpenDate: string;
   PlannedCloseDate: string;
-  FactCloseDate?:string;
+  FactCloseDate?: string;
   PriorityKey: number;
   PriorityName: ETaskPriorities;
-  PrioriyShName?:string;
+  PrioriyShName?: string;
   NodeKey: number;
   NodeName: string;
   NodeShName: string;
-  worker?:ITaskWorker;
+  worker?: ITaskWorker;
   type: IDictionary;
 }
 
-export interface ITaskWorker{
+export interface ITaskWorker {
   Name: string;
   Surname: string;
   Patron: string;

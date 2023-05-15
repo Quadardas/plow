@@ -1,4 +1,4 @@
-import type { EAvgTime, ETaskCount, ETaskPriorities, ETreeResult, ETypeWorker, EWorkerExp } from "@/enums/treeCriteria.enum";
+import type { EAvgTime, ETaskCount, ETaskPriorities, ETreeResult, ETypeWorker, EWorkerExp } from @/enums/treeCriteria.enum;
 
 export interface ITreeRule {
   id: number,

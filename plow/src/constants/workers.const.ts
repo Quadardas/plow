@@ -1,9 +1,9 @@
-import { EAvgTime, ETaskPriorities, ETypeWorker, EWorkerExp } from "@/enums/treeCriteria.enum";
+import { EAvgTime, ETaskPriorities, ETypeWorker, EWorkerExp } from @/enums/treeCriteria.enum;
 
 export const WORKERS = [
   {
     id: 0,
-    name: "Иван",
+    name: Иван,
     tasks: [],
     info: {
       exp: EWorkerExp.Middle,
@@ -13,7 +13,7 @@ export const WORKERS = [
   },
   {
     id: 1,
-    name: "Не Саша",
+    name: Не Саша,
     tasks: [0],
     // tasks: [
     //   {
@@ -32,8 +32,8 @@ export const WORKERS = [
   },
   {
     id: 2,
-    name: "Саша",
-    tasks: [1,2],
+    name: Саша,
+    tasks: [1, 2],
     // tasks: [
     //   {
     //     id: 1,

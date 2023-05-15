@@ -1,6 +1,6 @@
-import api from "@/axios";
-import type { IWorkerInfo } from "@/models/worker.model";
-import { DecideTree } from "@/services/decideTree.service";
+import api from @/axios ;
+import type { IWorkerInfo } from @/models/worker.model;
+import { DecideTree } from @/services/decideTree.service;
 
 export async function getNodeWorkers(node: number): Promise<Array<IWorkerInfo>> {
 	if (!node) {
@@ -9,10 +9,10 @@ export async function getNodeWorkers(node: number): Promise<Array<IWorkerInfo>> 
 
 	const dt = new DecideTree();
 
-  let workers = await api
-    .get(`/getNodeUsers/${node}`)
-    .then((res) => res.data);
-  const roles = await api.get("/getAllUserRoles").then((res) => res.data);
+	let workers = await api
+		.get(`/getNodeUsers/${node}`)
+		.then((res) => res.data);
+	const roles = await api.get(/getAllUserRoles ).then((res) => res.data);
     
 	workers = await Promise.all(
 		workers.map(async (el: IWorkerInfo) => {
