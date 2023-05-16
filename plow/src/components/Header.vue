@@ -84,7 +84,7 @@ const buttonClick = () => {
         }
 
         a { 
-          width: 100%;
+          width: 90%;
           color: #fff;
           text-align: left;
           text-decoration: none;

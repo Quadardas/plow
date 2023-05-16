@@ -19,6 +19,11 @@
         {{ priority.Name }}
       </option>
     </select>
+    <select v-model="selectedStatus">
+      <option v-for="status in statuses" :key="status.Key" :value="status.Name">
+        {{ status.Name }}
+      </option>
+    </select>
     <select v-model="selectedType">
       <option v-for="types in typeOptions" :key="types.Key" :value="types.Name">
         {{ types.Name }}
@@ -66,6 +71,7 @@ import { useUserStore } from "../../stores/user";
 import type { IWorkerInfo } from "../../models/worker.model";
 import { getNodeWorkers } from "../../utils/getWorkers.util";
 import { useRoute } from "vue-router";
+import { formatDate } from "@/utils/dateFormat.util";
 
 const props = defineProps<{
   task: ITask;
@@ -73,6 +79,7 @@ const props = defineProps<{
 
 const emits = defineEmits<{
   (e: "update"): void;
+  (e: "update:modelValue", value: ITask): void;
 }>();
 
 const store = useUserStore();
@@ -86,6 +93,8 @@ const date = new Date(taskInstance.value.OpenDate).toLocaleDateString("ru-RU");
 const directTask = ref(taskInstance.value?.worker?.RoleKey);
 const userList = ref<Array<IWorkerInfo>>([]);
 const route = useRoute();
+const statuses = ref<Array<IDictionary>>([]);
+const selectedStatus = ref(taskInstance.value?.StatusName);
 
 const regTime = async () => {
   await api
@@ -96,6 +105,27 @@ const regTime = async () => {
     })
     .then((res) => res.data);
 };
+
+function emitUpdate() {
+  emits("update:modelValue", {
+    id: props.task?.TaskKey,
+    name: taskInstance.value?.Name,
+    description: taskInstance.value?.Description,
+    openDate: formatDate(taskInstance.value?.OpenDate),
+    plannedDate: formatDate(taskInstance.value?.PlannedCloseDate),
+    factDate: formatDate(taskInstance.value?.PlannedCloseDate),
+    priorityKey: priorityOptions.value?.find(
+      (option) => option.Name === selectedPriority.value
+    )?.Key,
+    nodeKey: taskInstance.value?.NodeKey,
+    typeKey: typeOptions.value?.find(
+      (option) => option.Name === selectedType.value
+    )?.Key,
+    statusKey: statuses.value?.find(
+      (option) => option.Name === selectedStatus.value
+    )?.Key,
+  });
+}
 
 watch(
   () => directTask.value,
@@ -108,6 +138,21 @@ watch(
   }
 );
 
+watch(
+  [
+    () => taskInstance.value,
+    () => selectedStatus.value,
+    () => selectedPriority.value,
+    () => selectedType.value,
+  ],
+  () => {
+    emitUpdate();
+  },
+  {
+    deep: true,
+  }
+);
+
 onBeforeMount(async () => {
   priorityOptions.value = await api
     .get("/getDictionary/priority")
@@ -115,7 +160,11 @@ onBeforeMount(async () => {
   typeOptions.value = await api
     .get("/getDictionary/task_type")
     .then((res) => res.data);
+  statuses.value = await api
+    .get("/getDictionary/task_status")
+    .then((res) => res.data);
   userList.value = await getNodeWorkers(+route.params.id);
+  emitUpdate();
 });
 </script>
 <style lang="scss">
@@ -141,8 +190,8 @@ onBeforeMount(async () => {
   p {
     margin: 0;
   }
-  .reg-time{
-    .time{
+  .reg-time {
+    .time {
       margin: 10px;
     }
   }

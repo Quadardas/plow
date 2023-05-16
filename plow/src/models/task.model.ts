@@ -17,6 +17,7 @@ export interface ITask {
   NodeShName: string;
   worker?: ITaskWorker;
   type: IDictionary;
+  StatusName: string;
 }
 
 export interface ITaskWorker {

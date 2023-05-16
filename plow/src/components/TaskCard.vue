@@ -8,8 +8,12 @@
     </div>
     <Modal
       :show="showTask"
+      :modal-component="EditTask"
+      :component-props="{
+        task: selectedTask
+      }"
       @close="onClose"
-      @ok="onClose"
+      @ok="onOk"
       @update="onUpdate"
     >
       <template #header>
@@ -28,6 +32,7 @@ import type { IWorker } from "@/models/worker.model";
 import { ref } from "vue";
 import EditTask from "@/components/modals/EditTask.vue";
 import Modal from "@/components/modals/Modal.vue";
+import api from "../axios";
 
 const selectedTask = ref();
 const showTask = ref(false);
@@ -35,15 +40,22 @@ const props = defineProps<{
   task: ITask;
   worker: IWorker;
 }>();
+const emits = defineEmits<{
+  (e: "update"): void;
+}>();
 
 function onClose() {
   showTask.value = false;
   emits('update')
 }
 
-const emits = defineEmits<{
-  (e: "update"): void;
-}>();
+async function onOk(event: ITask): Promise<void> {
+  await api.patch(`/editTask/${event.id}`, {
+    ...event
+  })
+  showTask.value = false;
+  emits('update');
+}
 
 function onUpdate() {
   console.log("asdasd");
