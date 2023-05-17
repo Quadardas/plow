@@ -11,7 +11,7 @@
         @click="onUserEdit(user.PhysKey)"
       >
         <p>{{ user.Name }}</p>
-        <p>{{ user.role }}</p>
+        <p>{{ user.UserRoleName }}</p>
       </div>
       <div>
         <button @click="showAddUserModal = true">Добавить пользователя</button>

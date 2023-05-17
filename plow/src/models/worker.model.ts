@@ -21,5 +21,7 @@ export interface IWorkerInfo {
   Surname: string;
   avgTime: EAvgTime;
   Role: string;
+  UserRoleKey: number;
+  UserRoleName: string;
   tasks: Array<ITask>;
 }
