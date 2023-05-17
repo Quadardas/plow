@@ -17,7 +17,7 @@ export interface IWorkerInfo {
   Name: string;
   Patron: string;
   PhysKey: number;
-  RoleKey: string;
+  RoleKey: number;
   Surname: string;
   avgTime: EAvgTime;
   Role: string;

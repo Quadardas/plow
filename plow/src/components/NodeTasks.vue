@@ -38,19 +38,6 @@
           @ok="loadData()"
         />
         <button @click="onTaskSpread">Распределить</button>
-        <div>
-          <button @click="showModal = true">Добавить пользователя</button>
-          <Modal
-            :show="showModal"
-            :modalComponent="AddUserToProject"
-            @close="showModal = false"
-            hideOkButton
-          >
-            <template #header>
-              <h3>Добавление пользователя к проекту</h3>
-            </template>
-          </Modal>
-        </div>
       </div>
     </div>
   </div>
@@ -64,7 +51,6 @@ import { ETreeResult } from "../enums/treeCriteria.enum";
 import type { ITask } from "../models/task.model";
 import type { IWorkerInfo } from "../models/worker.model";
 import { DecideTree } from "../services/decideTree.service";
-import AddUserToProject from "..//components/modals/AddUserToProject.vue";
 import CreateTask from "@/components/modals/CreateTask.vue";
 import Modal from "../components/modals/Modal.vue";
 import TaskCard from "../components/TaskCard.vue";

@@ -3,7 +3,7 @@
     <Loader v-if="isDataLoading" />
     <div class="wrapper__page" v-show="!isDataLoading">
       <NodeTasks :workers="workers" />
-      <NodeUsers :workers="workers" />
+      <NodeUsers :workers="workers" @update="getWorkers" />
     </div>
   </div>
 </template>
@@ -24,11 +24,15 @@ const store = useUserStore();
 const route = useRoute();
 const workers = ref<Array<IWorkerInfo>>([]);
 
-onBeforeMount(async () => {
-  if (!store.isLogin) await Auth.refresh();
+async function getWorkers() {
   isDataLoading.value = true;
   workers.value = await getNodeWorkers(+route.params.id);
   isDataLoading.value = false;
+}
+
+onBeforeMount(async () => {
+  if (!store.isLogin) await Auth.refresh();
+  await getWorkers();
 });
 </script>
 

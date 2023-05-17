@@ -60,27 +60,47 @@ async function userRole() {
 }
 
 watch(
-  ()=> userInfo.value, 
-  ()=>{
-    emit('update:modelValue', {
-      dutyKey: duties.value?.find((duty) => duty.Name === userInfo.value?.DutyName)?.Key,
+  () => userInfo.value,
+  () => {
+    emit("update:modelValue", {
+      dutyKey: duties.value?.find(
+        (duty) => duty.Name === userInfo.value?.DutyName
+      )?.Key,
       physKey: props.userKey,
-      expKey: exps.value?.find((exp) => exp.Name === userInfo.value?.ExpName)?.Key,
-      surname: userInfo.value?.Surname, 
-      name: userInfo.value?.Name, 
+      expKey: exps.value?.find((exp) => exp.Name === userInfo.value?.ExpName)
+        ?.Key,
+      surname: userInfo.value?.Surname,
+      name: userInfo.value?.Name,
       patron: userInfo.value?.Patron,
-      userRoleKey: userInfo.value?.User_Role_Key
-    })
+      userRoleKey: userInfo.value?.User_Role_Key,
+    });
   },
   {
-    deep: true
+    deep: true,
   }
-)
+);
 
 onBeforeMount(async () => {
   userRole();
   duties.value = await api.get("/getDictionary/duty").then((res) => res.data);
   exps.value = await api.get("/getDictionary/exp").then((res) => res.data);
-  userInfo.value = await api.get(`/getUserInfo/${props.userKey}`).then((res) => res.data)
+  userInfo.value = await api
+    .get(`/getUserInfo/${props.userKey}`)
+    .then((res) => res.data);
 });
 </script>
+
+<style lang="scss" scoped>
+.create-form {
+  max-width: 50%;
+  display: flex;
+  flex-direction: column;
+
+  input {
+    margin-bottom: 5px;
+  }
+  select {
+    margin-bottom: 5px;
+  }
+}
+</style>

@@ -7,11 +7,24 @@
       <div
         class="user"
         v-for="user in workers"
-        :key="user.Key"
-        @click="onUserEdit(user.Key)"
+        :key="user.PhysKey"
+        @click="onUserEdit(user.PhysKey)"
       >
         <p>{{ user.Name }}</p>
-        <p>{{ getRoleName(user.User_Role_Key) }}</p>
+        <p>{{ user.role }}</p>
+      </div>
+      <div>
+        <button @click="showAddUserModal = true">Добавить пользователя</button>
+        <Modal
+          :show="showAddUserModal"
+          :modalComponent="AddUserToProject"
+          @close="showAddUserModal = false"
+          hideOkButton
+        >
+          <template #header>
+            <h3>Добавление пользователя к проекту</h3>
+          </template>
+        </Modal>
       </div>
     </div>
     <Modal
@@ -34,19 +47,23 @@
 import UserEdit from "../components/modals/UserEdit.vue";
 import Modal from "../components/modals/Modal.vue";
 import type { IWorkerInfo } from "../models/worker.model";
-import { ref } from "vue";
+import { onBeforeMount, ref } from "vue";
 import api from "../axios";
 import { useRoute } from "vue-router";
+import AddUserToProject from "..//components/modals/AddUserToProject.vue";
 
-defineProps<{
+const props = defineProps<{
   workers: Array<IWorkerInfo>;
 }>();
 
+const emits = defineEmits<{
+  (e: "update"): void;
+}>();
+
 const showModal = ref(false);
-const usersList = ref();
+const showAddUserModal = ref(false);
 const currentUser = ref();
 const usersRole = ref();
-const route = useRoute();
 
 function onUserEdit(key: number) {
   currentUser.value = key;
@@ -58,9 +75,9 @@ function getRoleName(key: number) {
 }
 
 async function onUserSave(user) {
-  const userInstance = usersList.value?.find(
-    (user) => user.Key === currentUser.value
-  )?.Role.Key;
+  const userInstance = props.workers?.find(
+    (user) => user.PhysKey === currentUser.value
+  )?.RoleKey;
 
   await api.patch(`/editUser/${currentUser.value}`, {
     ...user,
@@ -69,12 +86,17 @@ async function onUserSave(user) {
     ...user,
   });
   showModal.value = false;
-  userList();
-}
-
-async function userList() {
-  usersList.value = await api
-    .get(`/getNodeUsers/${route.params.id}`)
-    .then((res) => res.data);
+  emits("update");
 }
 </script>
+
+<style lang="scss" scoped>
+.wrapper__page {
+  .user {
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 5px;
+  }
+}
+</style>
